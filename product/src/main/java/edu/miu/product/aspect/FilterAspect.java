@@ -1,6 +1,8 @@
 package edu.miu.product.aspect;
 
+import edu.miu.product.exception.UnauthorizedUserException;
 import edu.miu.product.exception.UnknownServiceException;
+import edu.miu.product.util.JwtUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -23,6 +25,8 @@ public class FilterAspect {
 
     @Autowired
     HttpServletRequest request;
+    @Autowired
+    JwtUtil jwtUtil;
 
     @Pointcut("execution(* edu.miu.product.controller.*.*(..))")
     public void controllerClassMethods() {}
@@ -41,4 +45,21 @@ public class FilterAspect {
             throw new UnknownServiceException("Access denied");
         }
     }
+
+    @Before("controllerClassMethods()")
+    public void validateUser(JoinPoint joinPoint){
+        var authorizationHeader = request.getHeader("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String userToken = authorizationHeader.substring("Bearer ".length());
+            boolean isValid = jwtUtil.validateToken(userToken);
+
+            if(!isValid){
+                throw new UnauthorizedUserException("Unauthorized user");
+            }
+        }else{
+                throw new UnauthorizedUserException("Unauthorized user");
+        }
+
+
+        }
 }

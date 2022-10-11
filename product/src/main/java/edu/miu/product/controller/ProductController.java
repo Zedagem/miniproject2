@@ -3,6 +3,7 @@ package edu.miu.product.controller;
 import edu.miu.product.entity.Product;
 import edu.miu.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class ProductController {
     }
     @GetMapping("/{id}")
     public Product findById(@PathVariable Long id){
-        return productService.findById(id);
+               return productService.findById(id);
     }
     @PostMapping
     public void save(@RequestBody Product p){
