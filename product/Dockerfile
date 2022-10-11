@@ -7,6 +7,6 @@ RUN mvn package
 
 FROM openjdk:17
 COPY --from=build /tmp/target/product-0.0.1-SNAPSHOT.jar /tmp/product-0.0.1-SNAPSHOT.jar
-EXPOSE 8181
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar" , "/tmp/product-0.0.1-SNAPSHOT.jar"]
 
