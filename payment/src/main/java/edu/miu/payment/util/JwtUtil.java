@@ -1,15 +1,17 @@
 package edu.miu.payment.util;
 
 import io.jsonwebtoken.*;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public class JwtUtil {
 
     @Value("${mytoken}")
     private String secret;
-
 
     public boolean validateToken(String token) {
         try {
