@@ -3,12 +3,12 @@ package edu.miu.product.controller;
 import edu.miu.product.entity.Product;
 import edu.miu.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
     @Autowired
     ProductService productService;
@@ -17,19 +17,19 @@ public class ProductController {
     public List<Product> findAll(){
       return   productService.findAll();
     }
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public Product findById(@PathVariable Long id){
                return productService.findById(id);
     }
-    @PostMapping
+    @PostMapping("/save")
     public void save(@RequestBody Product p){
         productService.save(p);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public void update(@PathVariable Long id, @RequestBody Product product){
         productService.update(id,product);
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id){
         productService.deleteById(id);
     }
