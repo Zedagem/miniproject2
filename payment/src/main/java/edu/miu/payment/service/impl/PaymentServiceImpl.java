@@ -36,21 +36,22 @@ public class PaymentServiceImpl implements PaymentService {
 
         PaymentMethod paymentMethod;
         Integer accountId = orderRequest.getAccountId();
-        PaymentType paymentType1 = orderRequest.getPaymentType();
         Integer orderId = orderRequest.getOrderId();
 
         // Getting the payment information before sending to the payments
 
-        if(orderRequest.getPaymentType() == null){
+        if(!orderRequest.getPaymentType().isPresent()){
             // get payment information from account
-//            paymentMethod = restTemplate.getForObject("http://account-service:8081/preferredPaymentMethod/"+accountId,PaymentMethod.class);
-            paymentMethod = getPaymentMethod();
+            paymentMethod = restTemplate.getForObject("http://account-service:8081/accounts/preferredPaymentMethod/"+accountId,PaymentMethod.class);
+//            paymentMethod = getPaymentMethod();
         }else{
             //get payment information from account
-//            paymentMethod = restTemplate.getForObject("http://account-service:8081/preferredPaymentMethod/"+ accountId + "/" + paymentType1,PaymentMethod.class);
-            paymentMethod = getPaymentMethod();
+            PaymentType paymentType1 = orderRequest.getPaymentType().get();
+            paymentMethod = restTemplate.getForObject("http://account-service:8081/accounts/preferredPaymentMethod/"+ accountId + "/" + paymentType1,PaymentMethod.class);
+//            paymentMethod = getPaymentMethod();
         }
 
+        System.out.println(paymentMethod);
 
         PaymentRequest paymentRequest = new PaymentRequest(accountId,orderId,paymentMethod);
 
@@ -62,7 +63,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 
         // Dynamically getting the url for the payment services from configMap
-        String url = way.get(orderRequest.getPaymentType().toString());
+        String url = way.get(paymentMethod.getPaymentType().toString());
         System.out.println(url);
         String response = restTemplate.postForObject("http://"+ url,request,String.class);
         System.out.println(response);
@@ -107,9 +108,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     }
 
-    private PaymentMethod getPaymentMethod(){
-        return new PaymentMethod(PaymentType.CC,null,null,"0093412346781","332",null);
-    }
+//    private PaymentMethod getPaymentMethod(){
+//        return new PaymentMethod(PaymentType.CC,null,null,"0093412346781","332",null);
+//    }
     private Order getOrder(){
         return new Order(1,2,30,"placed");
     }
