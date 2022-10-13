@@ -6,6 +6,7 @@ import edu.miu.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -36,5 +37,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteById(Long id) {
         productRepo.deleteById(id);
+    }
+
+    @Override
+    public void updateQuanitiy(Long id, Integer quantity) {
+        Product p = productRepo.getById(id);
+        p.setAvailableUnit(quantity);
+        productRepo.save(p);
     }
 }
