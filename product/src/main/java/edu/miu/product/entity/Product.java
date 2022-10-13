@@ -1,8 +1,10 @@
 package edu.miu.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,4 +25,11 @@ public class Product {
     private int availableUnit;
     private double price;
 
+    public Product(String name, String vendor, Category category, int availableUnit, double price) {
+        this.name = name;
+        this.vendor = vendor;
+        this.category = category;
+        this.availableUnit = availableUnit;
+        this.price = price;
+    }
 }
