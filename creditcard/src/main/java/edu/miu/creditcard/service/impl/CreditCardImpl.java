@@ -10,7 +10,7 @@ public class CreditCardImpl implements CreditCardService {
 
     @Override
     public String pay(PaymentRequest paymentRequest) {
-        System.out.println(paymentRequest);
+        System.out.println("From credit-card service - successfully made payment for account " + paymentRequest.getAccountId() + " and order " + paymentRequest.getOrderId());
         return "OrderID " + paymentRequest.getOrderId() + " And AccountId " + paymentRequest.getAccountId() + "Payment has been successful through CreditCard Service" ;
     }
 }

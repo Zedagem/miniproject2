@@ -10,7 +10,7 @@ public class ShippingController {
 
     @PostMapping
     public Boolean ship(@RequestBody ShippingAddress shippingAddress){
-        System.out.println(shippingAddress);
+        System.out.println("Order has been shipped to " + shippingAddress);
         return true;
     }
 
